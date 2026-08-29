@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alpha Ledger — 421 Build-Along Projects + Hackathons, Team Dashboard &amp; Docs for DS, ML, DL, QF &amp; Industry</title>
+<meta name="description" content="A build-log of 421 hands-on projects plus timeboxed hackathons (with leaderboards) across Data Science, Machine Learning, Deep Learning, Quant Finance and Industry Projects — every entry ships a mini-tutorial and a real, in-browser code exercise that's checked automatically. Includes a shareable team dashboard, a Docs &amp; Tutorials library, and a Showcase of readymade projects with real output.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<!-- Pyodide: Python-in-the-browser runtime used by the Exercise Room. Loaded lazily —
+     this script tag is cheap; the ~6MB runtime only downloads the first time someone clicks "Run". -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<header class="site">
+  <nav class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark">AL</span>
+      <span>Alpha Ledger <small>· build log</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#catalog">Catalog</a>
+      <a href="#hackathons">Hackathons</a>
+      <a href="#dashboard">Team Dashboard</a>
+      <a href="#tutorials">Docs &amp; Tutorials</a>
+      <a href="#showcase">Showcase</a>
+      <a href="#library">Library</a>
+      <a href="#about">About</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-eyebrow">&gt; initializing project catalog<span class="cursor"></span></div>
+      <h1>421 builds.<br>8 hackathons.<br><span class="accent">Quant-weighted.</span></h1>
+      <p class="lede">A hands-on build-log spanning <b>Data Science</b>, <b>Machine Learning</b>, <b>Deep Learning</b>, <b>Quant Finance</b> and <b>Industry Projects</b>. Every project ships a reference repo, a course, a book, a paper, a Kaggle dataset where one fits, a build checklist, a step-by-step mini-tutorial, and a real Exercise Room where your code is checked automatically. Over 100 projects (plus all 8 hackathons) are marked for collaborative, team-based work — join them on a shareable <a href="#dashboard" style="color:var(--gold-bright);">Team Dashboard</a>, race for the top of a hackathon <a href="#hackathons" style="color:var(--gold-bright);">leaderboard</a>, read hand-written <a href="#tutorials" style="color:var(--gold-bright);">Docs &amp; Tutorials</a>, or browse the <a href="#showcase" style="color:var(--gold-bright);">Showcase</a> of readymade projects with real output before you build your own.</p>
+      <div class="hero-stats" id="heroStats"></div>
+    </div>
+  </section>
+
+  <section class="categories wrap" id="catalog">
+    <div class="section-label">Filter by discipline</div>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="view-tabs">
+      <button class="view-tab active" data-view="projects">Project catalog</button>
+      <button class="view-tab" data-view="hackathons" id="hackathonsAnchor">Hackathons (8)</button>
+    </div>
+    <div class="controls">
+      <label class="search-box">
+        <span class="prompt">&gt;</span>
+        <input id="searchInput" type="text" placeholder="grep a project title, e.g. 'GAN', 'backtest', 'churn'..." autocomplete="off">
+      </label>
+      <div class="diff-chips" id="diffChips">
+        <button class="chip active" data-diff="All">All levels</button>
+        <button class="chip" data-diff="Beginner"><span class="dot"></span>Beginner</button>
+        <button class="chip" data-diff="Intermediate"><span class="dot"></span>Intermediate</button>
+        <button class="chip" data-diff="Advanced"><span class="dot"></span>Advanced</button>
+        <button class="chip collab-chip" id="collabToggle">⇄ Collaborative only</button>
+      </div>
+    </div>
+    <div class="result-line" id="resultLine"></div>
+    <div class="grid" id="grid"></div>
+    <div class="load-more-wrap">
+      <button class="load-more" id="loadMoreBtn">Load 24 more entries</button>
+    </div>
+  </section>
+
+  <span id="hackathons"></span>
+
+  <section class="page-section wrap" id="dashboard">
+    <div class="section-label">Shareable team dashboard</div>
+    <p class="section-desc">Join any collaborative project or hackathon to your team board, assign roles to teammates, track combined progress, and copy a single link that loads the exact same board — team, roles, and joined items — for anyone you send it to. Everything here lives in your browser's local storage; the link is what makes it shareable without a backend.</p>
+    <div id="boardBanner"></div>
+    <div class="dash-grid" id="dashGrid"></div>
+  </section>
+
+  <section class="page-section wrap" id="tutorials">
+    <div class="section-label">Docs &amp; tutorials</div>
+    <p class="section-desc">Hand-written notes on the topics, tricks, and techniques that come up over and over again across the ledger — not project-specific steps, but the underlying skills. Pick a topic on the left.</p>
+    <div class="docs-layout">
+      <nav class="docs-nav" id="docsNav"></nav>
+      <article class="doc-reader" id="docReader"></article>
+    </div>
+  </section>
+
+  <section class="page-section wrap" id="showcase">
+    <div class="section-label">Showcase — readymade projects with output</div>
+    <p class="section-desc">Ten finished builds across every category, shown with their actual sample output — a chart, a confusion matrix, an equity curve — instead of just a checklist. Good for seeing what "done" looks like before you start the real build in the catalog above.</p>
+    <div class="showcase-filter" id="showcaseFilter"></div>
+    <div class="showcase-grid" id="showcaseGrid"></div>
+  </section>
+
+  <section class="library wrap" id="library">
+    <div class="section-label">Full resource library</div>
+    <p style="color:var(--ink-muted); font-size:13.5px; max-width:70ch; line-height:1.6;">Every GitHub repo, YouTube channel, book and paper cited across all 421 entries, deduplicated. Repos are matched to what each project actually builds (a Black-Scholes project links a Black-Scholes repo, not a generic library) and reused across closely related builds on purpose, since that is genuinely the same tool or educator worth following for that theme.</p>
+    <div class="library-grid">
+      <div class="lib-col">
+        <h4>⌥ Reference repositories</h4>
+        <ul id="libRepos"></ul>
+      </div>
+      <div class="lib-col">
+        <h4>▶ Course channels</h4>
+        <ul id="libChannels"></ul>
+      </div>
+      <div class="lib-col">
+        <h4>▤ Books</h4>
+        <ul id="libBooks"></ul>
+      </div>
+      <div class="lib-col">
+        <h4>❖ Papers</h4>
+        <ul id="libPapers"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="about">
+  <div class="wrap">
+    <p>Alpha Ledger is a curated build-log, not a dataset host. ~40 entries link straight to a matching, verified Kaggle page; every other entry ships a live Kaggle search link built from its title, plus a general Kaggle/UCI ML Repository fallback — so nothing points at a guessed dataset URL that might 404. Repos, channels, books and papers are real and cited deliberately, reused across related projects rather than invented per idea; verify details before relying on any single source. Exercise Room code runs entirely in your browser via Pyodide — nothing is sent to a server, and your checklist/exercise progress is stored only in this browser's local storage.</p>
+    <div class="fmark">// built for IIT BHU QUANTX &amp; anyone else stacking DS · ML · DL · QF reps</div>
+  </div>
+</footer>
+
+<div id="modalRoot"></div>
+
+<script src="js/data.js"></script>
+<script src="js/hackathons.js"></script>
+<script src="js/exercises.js"></script>
+<script src="js/tutorials.js"></script>
+<script src="js/showcase.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
